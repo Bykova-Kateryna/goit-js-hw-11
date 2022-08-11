@@ -32,6 +32,7 @@ async function createGalery (event){
     if(searchResult.hits.length === 0){
       Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.');
     } else {
+      refs.galleryEl.innerHTML = ""
       refs.tittle.textContent = `Hooray! We found ${searchResult.totalHits} images.`
       await createImagesCard(searchResult.hits);
       byScroll()
