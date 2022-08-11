@@ -27,18 +27,20 @@ async function createGalery (event){
     event.preventDefault();
     pageNumber = 1;
     refs.galleryEl.innerHTML = ""
+    refs.footer.innerHTML = ""
     name = event.target.searchQuery.value;
     const searchResult = await fetchImages(name, pageNumber);
     if(searchResult.hits.length === 0){
+      refs.tittle.textContent = '';
       Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.');
     } else {
-      refs.galleryEl.innerHTML = ""
       refs.tittle.textContent = `Hooray! We found ${searchResult.totalHits} images.`
       await createImagesCard(searchResult.hits);
       byScroll()
       const lightbox = new SimpleLightbox('.gallery a');
       if (searchResult.totalHits < 40){
-        refs.galleryEl.insertAdjacentHTML('afterend', `<div><h2 class="result-message">We're sorry, but you've reached the end of search results.</h2></div>`);
+        refs.loadBtn.classList.add('is-hidden')
+        refs.footer.insertAdjacentHTML('beforeend', `<h2 class="result-message">We're sorry, but you've reached the end of search results.</h2>`);
       } else {
         refs.loadBtn.classList.remove('is-hidden')
       } 
@@ -58,7 +60,7 @@ async function createGalery (event){
     lightbox.refresh()
     if (nextResult.hits.length < 40){
       refs.loadBtn.classList.add('is-hidden')
-      refs.galleryEl.insertAdjacentHTML('afterend', `<div><h2 class="result-message">We're sorry, but you've reached the end of search results.</h2></div>`);
+      refs.footer.insertAdjacentHTML('beforeend', `<h2 class="result-message">We're sorry, but you've reached the end of search results.</h2>`);
     }
 }
 
